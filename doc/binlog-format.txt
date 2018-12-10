@@ -1,0 +1,64 @@
+"update" -> "
+{
+	"database":"portal",
+	"table":"table_label",
+	"type":"update",
+	"ts":1544441144,
+	"xid":12639,
+	"commit":true,
+	"data":
+			{
+				"id":77,
+				"tid":216217,
+				"label":"CDN日志1",
+				"creator":"dw_zengzhihua",
+				"createTime":"2018-11-13 10:16:00",
+				"remark":"暂无描述"
+			},
+	"old":
+			{
+				"label":"CDN日志"
+			}
+}"
+
+
+
+"insert" -> 
+"
+{
+	"database":"portal",
+	"table":"table_label",
+	"type":"insert",
+	"ts":1544442871,
+	"xid":13367,
+	"commit":true,
+	"data":
+			{
+				"id":78,
+				"tid":122333,
+				"label":"测试日志",
+				"creator":"dw_wupeijian",
+				"createTime":null,
+				"remark":"无"
+			}
+}"
+
+"delete" -> 
+"
+{
+	"database":"portal",
+	"table":"table_label",
+	"type":"delete",
+	"ts":1544443038,
+	"xid":13443,
+	"commit":true,
+	"data":
+			{
+				"id":78,
+				"tid":122333,
+				"label":"测试日志",
+				"creator":"dw_wupeijian",
+				"createTime":null,
+				"remark":"无"
+			}
+}"
