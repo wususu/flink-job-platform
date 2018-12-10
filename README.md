@@ -1,2 +1,2 @@
-# flink-job-platform
-毕业设计：flink计算平台
+# storm-cal-platform
+毕业设计：storm实时计算平台
