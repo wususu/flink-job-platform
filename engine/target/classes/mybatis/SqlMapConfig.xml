@@ -1,0 +1,29 @@
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 定义 别名 -->
+    <typeAliases>
+        <!--
+        单个别名的定义
+        alias：别名，type：别名映射的类型  -->
+        <!-- <typeAlias type="com.hust.mybatis.po.User" alias="user"/> -->
+        <!-- 批量别名定义
+        指定包路径，自动扫描包下边的pojo，定义别名，别名默认为类名（首字母小写或大写）
+         -->
+        <typeAlias alias="Integer" type="java.lang.Integer" />
+        <typeAlias alias="Long" type="java.lang.Long" />
+        <typeAlias alias="HashMap" type="java.util.HashMap" />
+        <typeAlias alias="LinkedHashMap" type="java.util.LinkedHashMap" />
+        <typeAlias alias="ArrayList" type="java.util.ArrayList" />
+        <typeAlias alias="LinkedList" type="java.util.LinkedList" />
+
+    </typeAliases>
+
+    <mappers>
+        <!-- 通过resource引用mapper的映射文件 -->
+        <mapper resource="mapper/UserMapper.xml" />
+    </mappers>
+
+</configuration>
