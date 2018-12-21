@@ -12,7 +12,6 @@ import org.apache.storm.topology.TopologyBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import service.JedisService;
 
 import java.util.List;
 
@@ -45,12 +44,10 @@ public class Topology {
                 "classpath:spring/applicationContext-*.xml",
         };
         ApplicationContext actx = new ClassPathXmlApplicationContext(args);
-        JedisService jedisService = actx.getBean(JedisService.class);
         JdbcTemplate jdbcTemplate = actx.getBean(JdbcTemplate.class);
         UserMapper userMapper = actx.getBean(UserMapper.class);
         List<UserEntity> userEntities = userMapper.getAll();
         System.out.println(userEntities);
-        System.out.println(jedisService.hget("attr_id","key_id"));
         start();
     }
 }
