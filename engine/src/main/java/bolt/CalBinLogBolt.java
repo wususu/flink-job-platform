@@ -1,5 +1,6 @@
 package bolt;
 
+import model.CUDModel;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -14,12 +15,18 @@ import java.util.Map;
  */
 public class CalBinLogBolt extends BaseRichBolt {
 
-    public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
+    private OutputCollector collector;
 
+    public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
+        this.collector = collector;
     }
 
     public void execute(Tuple tuple) {
+        Object value = tuple.getValueByField("cudModel");
+        if (value != null) {
+            CUDModel model = (CUDModel)value;
 
+        }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {

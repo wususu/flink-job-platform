@@ -1,5 +1,6 @@
 package topology;
 
+import bolt.CalBinLogBolt;
 import bolt.DispatchBolt;
 import mapper.UserMapper;
 import model.UserEntity;
@@ -22,14 +23,22 @@ import java.util.List;
  */
 public class Topology {
 
+    public static String BINLOG_SPOUT = "binlog_spout";
+    public static String DISPATCH_BOLT = "dispatch_bolt";
+    public static String CAL_BINLOG_BOLT = "cal_binlog_bolt";
+
     public static boolean isLocal(){
         return true;
     }
 
     public static void start() {
-        final TopologyBuilder tp = new TopologyBuilder();
-        tp.setSpout("kafka_spout", new KafkaSpout<String, String>(KafkaSpoutConfig.<String, String>builder("172.28.21.32:9092", "maxwell").build()));
-        tp.setBolt("bolt", new DispatchBolt()).shuffleGrouping("kafka_spout");
+        TopologyBuilder tp = new TopologyBuilder();
+        DispatchBolt dispatchBolt = new DispatchBolt();
+        CalBinLogBolt calBinLogBolt = new CalBinLogBolt();
+        tp.setSpout(BINLOG_SPOUT, new KafkaSpout<String, String>(KafkaSpoutConfig.<String, String>builder("172.28.21.32:9092", "maxwell").build()));
+        tp.setBolt(DISPATCH_BOLT, dispatchBolt).shuffleGrouping(BINLOG_SPOUT);
+        tp.setBolt(CAL_BINLOG_BOLT, calBinLogBolt).shuffleGrouping(DISPATCH_BOLT);
+
         StormTopology topology = tp.createTopology();
 
         boolean runLocal = isLocal();
