@@ -20,13 +20,13 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        aid, tableId, attrType, calType, dbName, tblName, dimensionType, dimensionKey, field, calExpression, createTime, isOnline
+        aid, table_id, attr_type, cal_type, db_name, tbl_name, dimension_type, dimension_key, field, cal_expression, create_time, is_online
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
         SELECT
         <include refid="Base_Column_List" />
-        FROM attr_conf where isOnline = 0
+        FROM attr_conf where is_online = 0
     </select>
 
     <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap" >

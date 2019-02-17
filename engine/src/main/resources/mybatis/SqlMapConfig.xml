@@ -26,7 +26,6 @@
 
     <mappers>
         <!-- 通过resource引用mapper的映射文件 -->
-        <mapper resource="mapper/UserMapper.xml" />
         <mapper resource="mapper/AttrConfMapper.xml" />
 
     </mappers>

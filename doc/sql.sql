@@ -1,6 +1,7 @@
 CREATE TABLE `table_conf` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `type` varchar(100) DEFAULT 'BINLOG',
+  `name` varchar(225) NOT NULL,
   `topic` varchar(225) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `offline_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

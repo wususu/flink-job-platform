@@ -1,8 +1,11 @@
 package topology;
 
+import bolt.CalBinLogBolt;
 import bolt.DispatchBolt;
-import mapper.UserMapper;
-import model.UserEntity;
+import kafka.server.KafkaConfig;
+import mapper.TableConfMapper;
+
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.StormTopology;
@@ -12,6 +15,7 @@ import org.apache.storm.topology.TopologyBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 
 import java.util.List;
 
@@ -26,10 +30,18 @@ public class Topology {
         return true;
     }
 
+    public static String KAFKA_BINLOG_SPOUT = "KAFKA_BINLOG_SPOUT";
+    public static String DISPATCH_BOLT = "DISPATCH_BOLT";
+    public static String BINLOG_CALCULATE_BOLT = "BINLOG_CALCULATE_BOLT";
+    
     public static void start() {
         final TopologyBuilder tp = new TopologyBuilder();
-        tp.setSpout("kafka_spout", new KafkaSpout<String, String>(KafkaSpoutConfig.<String, String>builder("172.28.21.32:9092", "maxwell").build()));
-        tp.setBolt("bolt", new DispatchBolt()).shuffleGrouping("kafka_spout");
+        KafkaSpoutConfig.Builder<String, String> kafkaSpoutConfigBuilder = new KafkaSpoutConfig.Builder("95.163.197.216:9092",StringDeserializer.class,
+                StringDeserializer.class,"maxwell");
+        KafkaSpoutConfig<String, String> kafkaConfig = kafkaSpoutConfigBuilder.build();
+        tp.setSpout(KAFKA_BINLOG_SPOUT, new KafkaSpout<String, String>(kafkaConfig));
+        tp.setBolt(DISPATCH_BOLT, new DispatchBolt()).shuffleGrouping(KAFKA_BINLOG_SPOUT);
+        tp.setBolt(BINLOG_CALCULATE_BOLT, new CalBinLogBolt()).shuffleGrouping(DISPATCH_BOLT);
         StormTopology topology = tp.createTopology();
 
         boolean runLocal = isLocal();
@@ -45,9 +57,7 @@ public class Topology {
         };
         ApplicationContext actx = new ClassPathXmlApplicationContext(args);
         JdbcTemplate jdbcTemplate = actx.getBean(JdbcTemplate.class);
-        UserMapper userMapper = actx.getBean(UserMapper.class);
-        List<UserEntity> userEntities = userMapper.getAll();
-        System.out.println(userEntities);
+        TableConfMapper tableConfMapper = actx.getBean(TableConfMapper.class);
         start();
     }
 }

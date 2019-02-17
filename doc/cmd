@@ -1,0 +1,8 @@
+//启动zk
+/data/app/kafka2.10/bin/zookeeper-server-start.sh /data/app/kafka2.11/config/zookeeper.properties 
+// 启动kafka
+/data/app/kafka2.10/bin/kafka-server-start.sh /data/app/kafka2.11/config/server.properties
+// 启动maxwell
+bin/maxwell --user='root' --password='root' --host='127.0.0.1' --producer=kafka --kafka.bootstrap.servers=95.163.197.216:9092
+// 消费测试
+bin/kafka-console-consumer.sh --zookeeper l 95.163.197.216:2181 --topic maxwell

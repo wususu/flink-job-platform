@@ -21,9 +21,11 @@ public class JedisService {
     public static final String REDIS_POOL_TEST_ON_RETURN = "redis.pool.testOnReturn";
     public static final String REDIS_IP = "redis.ip";
     public static final String REDIS_PORT = "redis.port";
+    public static final String REDIS_PASS = "redis.auth";
 
     private static JedisPool jedisPool;
     private static Jedis jedis;
+    private static String pass = Configurator.get(REDIS_PASS);
 
     static{
         JedisPoolConfig config = new JedisPoolConfig();
@@ -34,21 +36,18 @@ public class JedisService {
         config.setTestOnBorrow(Configurator.getBoolean(REDIS_POOL_TEST_ON_BORROW));
         config.setTestOnReturn(Configurator.getBoolean(REDIS_POOL_TEST_ON_RETURN));
         jedisPool = new JedisPool(config, host, port);
-        jedis = jedisPool.getResource();
     }
 
     public void hset(String attrId, String keyId, String value) {
+        jedis = jedisPool.getResource();
+        jedis.auth(pass);
         jedis.hset(attrId, keyId, value);
     }
 
     public String hget(String attrId, String keyId) {
+    	 jedis = jedisPool.getResource();
+         jedis.auth(pass);
         return jedis.hget(attrId, keyId);
     }
 
-    public static void main(String args[]) {
-        JedisService jedisService = new JedisService();
-        jedisService.hset("attr_id", "key_id", "value");
-        String value = jedisService.hget("attr_id", "key_id");
-        System.out.println(value);
-    }
 }

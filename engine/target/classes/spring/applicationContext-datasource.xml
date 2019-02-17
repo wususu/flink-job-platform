@@ -4,6 +4,15 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 	   default-autowire="byName" default-lazy-init="false">
 
+	<bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="singleton" value="false" />
+		<property name="locations">
+			<list>
+				<value>classpath*:app-test.properties</value>
+			</list>
+		</property>
+	</bean>
 	<!-- father 数据源 -->
 	<bean id="fatherDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close" abstract="true">
@@ -38,12 +47,26 @@
 	</bean>
 	   	
 	   	<!--How long to hang on to excess unused connections after traffic spike -->
-	
-	   <bean id="dataSource" parent="fatherDataSource">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/pikapika?useUnicode=true&amp;characterEncoding=utf8" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+
+<!--	   <bean id="dataSource" parent="fatherDataSource">
 		   <property name="driverClass" value="com.mysql.jdbc.Driver" />
 		   <property name="jdbcUrl" value="jdbc:mysql://${rae_mysqlme_host}:${rae_mysqlme_port}/${rae_mysqlme_default_db}?useUnicode=true&amp;characterEncoding=utf8" />
 		   <property name="user" value="${rae_mysqlme_user}" />
 		   <property name="password" value="${rae_mysqlme_password}" />
-	   </bean>
+	   </bean>-->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- mybatis配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+	</bean>
 	
 </beans>
