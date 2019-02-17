@@ -112,4 +112,14 @@ public class AttrConf {
     public void setIsOnline(Integer isOnline) {
         this.isOnline = isOnline;
     }
+
+	@Override
+	public String toString() {
+		return "AttrConf [aid=" + aid + ", tableId=" + tableId + ", attrType=" + attrType + ", calType=" + calType
+				+ ", dbName=" + dbName + ", tblName=" + tblName + ", dimensionType=" + dimensionType + ", dimensionKey="
+				+ dimensionKey + ", field=" + field + ", calExpression=" + calExpression + ", createTime=" + createTime
+				+ ", isOnline=" + isOnline + "]";
+	}
+    
+    
 }
