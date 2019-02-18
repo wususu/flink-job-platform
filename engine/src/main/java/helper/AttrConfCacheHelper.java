@@ -14,8 +14,17 @@ public class AttrConfCacheHelper extends CacheHelper<String, AttrConf>{
 
 	private AttrConfMapper attrConfMapper;
 	
+	public static final AttrConfCacheHelper singleton = new AttrConfCacheHelper();
+	
+	public static AttrConfCacheHelper instance() {
+		return singleton;
+	}
+	
+	private AttrConfCacheHelper() {
+	}
+	
 	@Override
-	public ConcurrentHashMap<String, AttrConf> getNew() {
+	protected ConcurrentHashMap<String, AttrConf> getNew() {
 		// TODO Auto-generated method stub
 		List<AttrConf> attrConfs =  attrConfMapper.getAll();
 		ConcurrentHashMap<String, AttrConf> map = new ConcurrentHashMap();
@@ -28,7 +37,7 @@ public class AttrConfCacheHelper extends CacheHelper<String, AttrConf>{
 	}
 
 	@Override
-	public void prepare() {
+	protected void prepare() {
 		attrConfMapper = MapperHelper.getMapper(AttrConfMapper.class);
 	}
 

@@ -6,6 +6,8 @@ public class TableConf {
 
     private int id;
     private String type;
+    private String name;
+    private String topic;
     private Date createTime;
     private Date offlineTime;
     private String creater;
@@ -58,4 +60,22 @@ public class TableConf {
     public void setIsOnline(int isOnline) {
         this.isOnline = isOnline;
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTopic() {
+		return topic;
+	}
+
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+    
+    
 }

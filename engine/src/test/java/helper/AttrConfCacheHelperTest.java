@@ -13,7 +13,7 @@ import model.AttrConf;
 @ContextConfiguration(locations = "classpath:spring/applicationContext-*.xml")
 public class AttrConfCacheHelperTest {
 
-	private AttrConfCacheHelper attrConfCacheHelper = new AttrConfCacheHelper();
+	private AttrConfCacheHelper attrConfCacheHelper = AttrConfCacheHelper.instance();
 	
 	@Test
 	public void test() {

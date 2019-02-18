@@ -26,9 +26,9 @@ public abstract class CacheHelper<K, V> {
 		scheduledExecutorService.scheduleWithFixedDelay(new Flasher(), 0, 5, TimeUnit.MINUTES);
 	}
 	
-	public abstract void prepare();
+	protected abstract void prepare();
 	
-	public abstract ConcurrentHashMap<K, V> getNew();
+	protected abstract ConcurrentHashMap<K, V> getNew();
 	
 	private class Flasher implements Runnable {
 
