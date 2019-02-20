@@ -3,14 +3,15 @@ package helper;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 import conf.MapperHelper;
 import mapper.AttrConfMapper;
 import model.AttrConf;
+import model.XTable;
 
 
-public class AttrConfCacheHelper extends CacheHelper<String, AttrConf>{
+public class AttrConfCacheHelper extends CacheHelper<XTable, List<AttrConf>>{
 
 	private AttrConfMapper attrConfMapper;
 	
@@ -24,13 +25,20 @@ public class AttrConfCacheHelper extends CacheHelper<String, AttrConf>{
 	}
 	
 	@Override
-	protected ConcurrentHashMap<String, AttrConf> getNew() {
-		// TODO Auto-generated method stub
+	protected ConcurrentHashMap<XTable, List<AttrConf>> getNew() {
 		List<AttrConf> attrConfs =  attrConfMapper.getAll();
-		ConcurrentHashMap<String, AttrConf> map = new ConcurrentHashMap();
+		ConcurrentHashMap<XTable,  List<AttrConf>> map = new ConcurrentHashMap();
 		if (attrConfs != null && !attrConfs.isEmpty()) {
 			for (AttrConf attrConf : attrConfs) {
-				map.put(attrConf.getAid(), attrConf);
+				XTable xTable = new XTable(attrConf.getDbName(), attrConf.getTblName());
+				attrConfs = map.get(xTable);
+				if (attrConfs == null) {
+					attrConfs = Lists.newArrayList();
+					attrConfs.add(attrConf);
+					map.put(xTable, attrConfs);
+					continue;
+				}
+				attrConfs.add(attrConf);
 			}
 		}
 		return map;

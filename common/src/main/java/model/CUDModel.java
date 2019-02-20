@@ -15,6 +15,7 @@ public class CUDModel {
     private long xid;
     private boolean commit;
     private Map<String, String> data;
+    private Map<String, String> old;
 
     public String getDatabase() {
         return database;
@@ -78,7 +79,17 @@ public class CUDModel {
         return false;
     }
 
-    @Override
+    
+    
+    public Map<String, String> getOld() {
+		return old;
+	}
+
+	public void setOld(Map<String, String> old) {
+		this.old = old;
+	}
+
+	@Override
     public String toString() {
         return "CUDModel{" +
                 "database='" + database + '\'' +

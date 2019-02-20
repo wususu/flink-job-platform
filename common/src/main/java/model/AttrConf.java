@@ -6,13 +6,14 @@ public class AttrConf {
 
     private String aid;
     private Integer tableId;
-    private Integer attrType;
-    private Integer calType;
+    private Integer attrType;  //实时 复合 
+    private Integer calType;  //替换最新值 最大值 最小值 字符串拼接 替换最新
     private String dbName;
     private String tblName;
     private String dimensionType;
     private String dimensionKey;
-    private String field;
+    private String field; //列名
+    private String fieldType; // 字符串 整数 浮点数 日期 
     private String calExpression;
     private Date createTime;
     private Integer isOnline;

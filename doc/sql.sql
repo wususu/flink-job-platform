@@ -21,6 +21,7 @@ CREATE TABLE `attr_conf` (
   `dimension_type` varchar(100) NOT NULL,
   `dimension_key` varchar(225) NOT NULL,
   `field` varchar(225) DEFAULT NULL,
+    `field_type` varchar(20) DEFAULT NULL,
   `cal_expression` varchar(225) DEFAULT NULL COMMENT 'av表达式',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_online` int(1) NOT NULL DEFAULT '1',

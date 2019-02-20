@@ -3,6 +3,7 @@ package bolt;
 import model.AttrConf;
 import model.CUDModel;
 import model.TableConf;
+import model.XTable;
 
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -13,6 +14,7 @@ import org.apache.storm.tuple.Tuple;
 import helper.AttrConfCacheHelper;
 import helper.TableConfCacheHelper;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,7 +26,7 @@ public class CalBinLogBolt extends BaseRichBolt {
 
     private OutputCollector collector;
     private Map<String, TableConf> tblConfCache;
-    private Map<String, AttrConf> attrConfCache;
+    private Map<XTable, List<AttrConf>> attrConfCache;
     
     
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
@@ -39,14 +41,15 @@ public class CalBinLogBolt extends BaseRichBolt {
             CUDModel model = (CUDModel)value;
             String fullName = model.getDatabase() + "." + model.getTable();
             TableConf tableConf = this.tblConfCache.get(fullName);
-            if (tableConf == null) {
+            if (tableConf == null || tableConf.getIsOnline() == 0) {
 				return ;
 			}
+            
 
         }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-
+    		outputFieldsDeclarer.declare(fields);
     }
 }

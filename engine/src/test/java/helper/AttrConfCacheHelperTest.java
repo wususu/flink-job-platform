@@ -17,8 +17,8 @@ public class AttrConfCacheHelperTest {
 	
 	@Test
 	public void test() {
-		Map<String, AttrConf> cache = attrConfCacheHelper.getAll();
-		System.out.println(cache);
+//		Map<String, AttrConf> cache = attrConfCacheHelper.getAll();
+//		System.out.println(cache);
 	}
 	
 }
