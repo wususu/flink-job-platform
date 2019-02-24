@@ -1,3 +1,14 @@
+CUDModel
+{
+	database='test_maxwell',
+	 table='user_info', 
+	 type=INSERT, 
+	 ts=1550384557, 
+	 xid=1470, 
+	 commit=true, 
+	 data={name=null, userid=1, age=23}
+	}
+
 "update" -> "
 {
 	"database":"portal",
@@ -10,14 +21,14 @@
 			{
 				"id":77,
 				"tid":216217,
-				"label":"CDNÈÕÖ¾1",
+				"label":"CDNï¿½ï¿½Ö¾1",
 				"creator":"dw_zengzhihua",
 				"createTime":"2018-11-13 10:16:00",
-				"remark":"ÔİÎŞÃèÊö"
+				"remark":"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 			},
 	"old":
 			{
-				"label":"CDNÈÕÖ¾"
+				"label":"CDNï¿½ï¿½Ö¾"
 			}
 }"
 
@@ -36,10 +47,10 @@
 			{
 				"id":78,
 				"tid":122333,
-				"label":"²âÊÔÈÕÖ¾",
+				"label":"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾",
 				"creator":"dw_wupeijian",
 				"createTime":null,
-				"remark":"ÎŞ"
+				"remark":"ï¿½ï¿½"
 			}
 }"
 
@@ -56,9 +67,9 @@
 			{
 				"id":78,
 				"tid":122333,
-				"label":"²âÊÔÈÕÖ¾",
+				"label":"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾",
 				"creator":"dw_wupeijian",
 				"createTime":null,
-				"remark":"ÎŞ"
+				"remark":"ï¿½ï¿½"
 			}
 }"

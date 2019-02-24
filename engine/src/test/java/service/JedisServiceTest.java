@@ -20,8 +20,13 @@ public class JedisServiceTest {
 
     @Test
     public void test(){
+    	try{
         System.out.println(jedisService);
-        System.out.println(jedisService.hget("attr_id","key_id"));
-    }
+        System.out.println(jedisService.hget("key","value"));
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+    	}
+    	}
 
 }

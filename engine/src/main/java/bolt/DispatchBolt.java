@@ -42,9 +42,7 @@ public class DispatchBolt extends BaseRichBolt {
     private OutputCollector collector;
     private TableConfMapper tableConfMapper ;
     private AttrConfMapper attrConfMapper ;
-    
-    @Autowired
-    private JedisService jedisService;
+
 
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
         this.collector = collector;
@@ -65,6 +63,7 @@ public class DispatchBolt extends BaseRichBolt {
         		return ;
         	}
         	if (cudModel != null) {
+        		LOG.info("EMIT: {}", cudModel.toString());
             	this.collector.emit(new Values(cudModel));
 			}
         }

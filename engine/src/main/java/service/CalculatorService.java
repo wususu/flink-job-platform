@@ -2,31 +2,126 @@ package service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 
+import clojure.lang.Obj;
 import model.AttrConf;
 import model.CUDModel;
+import model.CalType;
+import model.FieldType;
 
 @Service
 public class CalculatorService {
 
+		protected static final Logger LOG = LoggerFactory.getLogger(CalculatorService.class);
+	
 		@Autowired
 		private JedisService jedisService;
 		
 		
-		public void calculate(CUDModel model, List<AttrConf> attrConfs) {
+		public List<AttrValue> calculate(CUDModel model, List<AttrConf> attrConfs) {
+			List<AttrValue> attrValues = Lists.newArrayList();
 				for (AttrConf attrConf : attrConfs) {
+					try{
 					String attrId = attrConf.getAid();
 					String diimensionKey =  attrConf.getDimensionKey();
 					String dimensionType = attrConf.getDimensionType();
 					String diimension = model.getData().get(diimensionKey);
 					Preconditions.checkNotNull(diimension, "can not found dimension");
 					String key = dimensionType + ":" + diimension;
-					String old = jedisService.hget(attrId, key);
-					
+					Object current = jedisService.hget(attrId, key);
+					CalType calType = CalType.get(attrConf.getCalType());
+					Class<?> clazz = getClass(attrConf);
+					Object newVal = execNewValue(model, attrConf, clazz);
+					AttrValue attrValue = new AttrValue(current, newVal, attrId, key, calType, clazz);
+					attrValues.add(attrValue);
+					}catch (Exception e) {
+						LOG.error(e.getMessage(), e);
+					}
 				}
+				return attrValues;
+		}
+		
+		private static Class<?> getClass(AttrConf attrConf) {
+			String fieldType = attrConf.getFieldType();
+			FieldType type = FieldType.get(fieldType);
+			return type.clazz;
+		}
+		
+		private static<T> T execNewValue(CUDModel model, AttrConf attrConf, Class<T> clazz) {
+			String field = attrConf.getField();
+			String rawVal = model.getData().get(field);
+			return clazz.cast(rawVal);
+		}
+		
+		public class AttrValue{
+			private Object currentValue;
+			private Object newValue;
+			private String aid;
+			private String key;
+			private CalType calType;
+			private Class<?> clazz;
+			
+			public AttrValue(Object currentValue,Object newValue, String aid, String key, CalType calType, Class<?> clazz) {
+				super();
+				this.currentValue = currentValue;
+				this.newValue = newValue;
+				this.aid = aid;
+				this.key = key;
+				this.calType = calType;
+				this.clazz = clazz;
+			}
+
+			public Object getCurrentValue() {
+				return currentValue;
+			}
+
+			public void setCurrentValue(Object currentValue) {
+				this.currentValue = currentValue;
+			}
+
+			public Object getNewValue() {
+				return newValue;
+			}
+
+			public void setNewValue(Object newValue) {
+				this.newValue = newValue;
+			}
+
+			public String getAid() {
+				return aid;
+			}
+			public void setAid(String aid) {
+				this.aid = aid;
+			}
+			public CalType getCalType() {
+				return calType;
+			}
+			public void setCalType(CalType calType) {
+				this.calType = calType;
+			}
+			public String getKey() {
+				return key;
+			}
+			public void setKey(String key) {
+				this.key = key;
+			}
+
+			public Class<?> getValClazz() {
+				return clazz;
+			}
+
+			public void setValClazz(Class<?> clazz) {
+				this.clazz = clazz;
+			}
+			
+			
 		}
 }

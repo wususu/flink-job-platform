@@ -26,7 +26,7 @@ public class TableConfMapperTest {
 		tableConf.setCreater("dw_wupeijian");
 		tableConf.setCreateTime(new Date());
 		tableConf.setType("binlog");
-		tableConf.setName("database.table");
+		tableConf.setName("test_maxwell.user_info");
 		tableConf.setTopic("topicName");
 	}
 	

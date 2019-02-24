@@ -121,6 +121,12 @@ public class AttrConf {
 				+ dimensionKey + ", field=" + field + ", calExpression=" + calExpression + ", createTime=" + createTime
 				+ ", isOnline=" + isOnline + "]";
 	}
-    
-    
+
+	public String getFieldType() {
+		return fieldType;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+	}
 }

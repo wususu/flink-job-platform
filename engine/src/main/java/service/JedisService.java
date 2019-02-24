@@ -36,18 +36,18 @@ public class JedisService {
         config.setTestOnBorrow(Configurator.getBoolean(REDIS_POOL_TEST_ON_BORROW));
         config.setTestOnReturn(Configurator.getBoolean(REDIS_POOL_TEST_ON_RETURN));
         jedisPool = new JedisPool(config, host, port);
+        jedis = jedisPool.getResource();
     }
 
     public void hset(String attrId, String keyId, String value) {
-        jedis = jedisPool.getResource();
-        jedis.auth(pass);
         jedis.hset(attrId, keyId, value);
     }
 
     public String hget(String attrId, String keyId) {
-    	 jedis = jedisPool.getResource();
-         jedis.auth(pass);
-        return jedis.hget(attrId, keyId);
+//    	 jedis = jedisPool.getResource();
+    	 return jedis.hget(attrId, keyId);
     }
+    
+    
 
 }
