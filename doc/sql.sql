@@ -27,3 +27,9 @@ CREATE TABLE `attr_conf` (
   `is_online` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`aid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `real_complex_attr_map` (
+  `complex_attrid` varchar(100) NOT NULL,
+  `real_attrid` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 

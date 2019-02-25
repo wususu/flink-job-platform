@@ -65,6 +65,7 @@ public class DispatchBolt extends BaseRichBolt {
         	if (cudModel != null) {
         		LOG.info("EMIT: {}", cudModel.toString());
             	this.collector.emit(new Values(cudModel));
+            	collector.ack(tuple);
 			}
         }
     }

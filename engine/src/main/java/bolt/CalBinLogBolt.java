@@ -66,6 +66,7 @@ public class CalBinLogBolt extends BaseRichBolt {
     			}
 			}
         }
+    	collector.ack(tuple);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {

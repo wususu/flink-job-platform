@@ -1,4 +1,4 @@
-package cal;
+package service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import model.CalType;
 import service.CalculatorService.AttrValue;
-import service.JedisService;
 
 /**
  * @author janke
@@ -63,7 +62,7 @@ public class Calculater {
 		if (currentVal == null) {
 			currentVal = "";
 		}
-		String restVal = String.valueOf(currentVal) + String.valueOf(newVal);
+		String restVal = String.valueOf(currentVal) + "," + String.valueOf(newVal);
 		return String.valueOf(restVal);
 	}
 	

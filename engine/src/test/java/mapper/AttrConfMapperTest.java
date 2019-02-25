@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.common.collect.Lists;
+
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/applicationContext-*.xml")
@@ -36,6 +39,27 @@ public class AttrConfMapperTest {
         attrConf.setIsOnline(1);
         attrConf.setTableId(3);
         attrConfMapper.insert(attrConf);
+    }
+    
+    @Test
+    public void testGet() {
+    	List<String> realIds = attrConfMapper.getRealAttrByComplexAttrId("fr20192");
+    	List<String> complexIds = attrConfMapper.getComplexAttrByRealAttrId("fr20191");
+    	System.out.println(realIds);
+    	System.out.println(complexIds);
+    }
+    
+//    @Test
+    public void testInsertMap() {
+    	try{
+    	String complex = "fr20192";
+    	List<String> reals = Lists.newArrayList();
+    	reals.add("fr20191");
+    	attrConfMapper.insertComplexRealMap(complex, reals);
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}
     }
 
 }
