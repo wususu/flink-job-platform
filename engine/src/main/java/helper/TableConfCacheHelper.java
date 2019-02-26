@@ -30,7 +30,7 @@ public class TableConfCacheHelper extends CacheHelper<String, TableConf>{
 	@Override
 	public ConcurrentHashMap<String, TableConf> getNew() {
 		List<TableConf> tableConfs = tableConfMapper.getAll();
-		ConcurrentHashMap<String, TableConf> map = new ConcurrentHashMap<>();
+		ConcurrentHashMap<String, TableConf> map = new ConcurrentHashMap<String, TableConf>();
 		for (TableConf tableConf : tableConfs) {
 			map.put(tableConf.getName(), tableConf);
 		}

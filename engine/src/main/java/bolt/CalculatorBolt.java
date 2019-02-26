@@ -1,5 +1,6 @@
 package bolt;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.storm.task.OutputCollector;
@@ -14,7 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import clojure.java.jmx.Bean;
 import conf.BeanUtils;
+import helper.ComplexAttrMapCacheHelper;
+import model.AttrConf;
 import service.Calculater;
+import service.JedisService;
 import service.CalculatorService.AttrValue;
 
 
@@ -24,14 +28,14 @@ public class CalculatorBolt extends BaseRichBolt {
 	
 	private OutputCollector collector;
 	private Calculater calculater;
+	private JedisService jedisService;
 	
-	@Override
 	public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
 			this.collector = collector;
-			this.calculater = BeanUtils.getService(Calculater.class);
+			this.jedisService = BeanUtils.getService(JedisService.class);
+			this.calculater = new Calculater(jedisService);
 	}
 
-	@Override
 	public void execute(Tuple tuple) {
 		String attrId = tuple.getStringByField("attrId");
 		Object obj = tuple.getValueByField("attrValue");
@@ -45,7 +49,6 @@ public class CalculatorBolt extends BaseRichBolt {
 		}
 	}
 
-	@Override
 	public void declareOutputFields(OutputFieldsDeclarer declarer) {
 		declarer.declare(new Fields("attrId", "value", "attrValue"));
 	}

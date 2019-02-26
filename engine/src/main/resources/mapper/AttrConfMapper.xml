@@ -14,7 +14,7 @@
         <result column="dimension_type" property="dimensionType" jdbcType="VARCHAR" />
         <result column="dimension_key" property="dimensionKey" jdbcType="VARCHAR" />
         <result column="field" property="field" jdbcType="VARCHAR" />
-                <result column="field_type" property="fieldType" jdbcType="VARCHAR" />
+          <result column="field_type" property="fieldType" jdbcType="VARCHAR" />
         
         <result column="cal_expression" property="calExpression" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="DATE" />

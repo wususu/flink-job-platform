@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import clojure.lang.Obj;
 import model.AttrConf;
+import model.AttrType;
+import model.BinLogType;
 import model.CUDModel;
 import model.CalType;
 import model.FieldType;
@@ -30,17 +33,29 @@ public class CalculatorService {
 			List<AttrValue> attrValues = Lists.newArrayList();
 				for (AttrConf attrConf : attrConfs) {
 					try{
+						AttrValue attrValue = null;
 					String attrId = attrConf.getAid();
 					String diimensionKey =  attrConf.getDimensionKey();
 					String dimensionType = attrConf.getDimensionType();
 					String diimension = model.getData().get(diimensionKey);
 					Preconditions.checkNotNull(diimension, "can not found dimension");
 					String key = dimensionType + ":" + diimension;
-					Object current = jedisService.hget(attrId, key);
 					CalType calType = CalType.get(attrConf.getCalType());
 					Class<?> clazz = getClass(attrConf);
+					if (CalType.AVIEXP.equals(calType)) {
+						Map<String, String> data = null;
+						if (!BinLogType.DELETE.equals(model.getType())) {
+							data = model.getOld();
+							data.putAll(model.getData());
+						}
+						attrValue = new AttrValue(attrConf.getCalExpression(), data, attrId, key, calType, clazz);
+						attrValues.add(attrValue);
+						continue;
+					}
+					Object current = jedisService.hget(attrId, key);
+
 					Object newVal = execNewValue(model, attrConf, clazz);
-					AttrValue attrValue = new AttrValue(current, newVal, attrId, key, calType, clazz);
+					attrValue = new AttrValue(current, newVal, attrId, key, calType, clazz);
 					attrValues.add(attrValue);
 					}catch (Exception e) {
 						LOG.error(e.getMessage(), e);
@@ -62,12 +77,25 @@ public class CalculatorService {
 		}
 		
 		public class AttrValue{
+			private AttrType attrType;
 			private Object currentValue;
 			private Object newValue;
+			private String exp;
+			private Map<String, Object> data;
 			private String aid;
 			private String key;
 			private CalType calType;
 			private Class<?> clazz;
+			
+			public AttrValue(String exp, Map<String, Object> data, String aid, String key, CalType calType, Class<?> clazz) {
+				super();
+				this.exp = exp;
+				this.data = data;
+				this.aid = aid;
+				this.key = key;
+				this.calType = calType;
+				this.clazz = clazz;
+			}
 			
 			public AttrValue(Object currentValue,Object newValue, String aid, String key, CalType calType, Class<?> clazz) {
 				super();
@@ -121,7 +149,37 @@ public class CalculatorService {
 			public void setValClazz(Class<?> clazz) {
 				this.clazz = clazz;
 			}
-			
-			
+
+			public String getExp() {
+				return exp;
+			}
+
+			public void setExp(String exp) {
+				this.exp = exp;
+			}
+
+			public Map<String, Object> getData() {
+				return data;
+			}
+
+			public void setData(Map<String, Object> data) {
+				this.data = data;
+			}
+
+			public Class<?> getClazz() {
+				return clazz;
+			}
+
+			public void setClazz(Class<?> clazz) {
+				this.clazz = clazz;
+			}
+
+			public AttrType getAttrType() {
+				return attrType;
+			}
+
+			public void setAttrType(AttrType attrType) {
+				this.attrType = attrType;
+			}
 		}
 }

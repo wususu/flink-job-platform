@@ -1,10 +1,20 @@
 package service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
+import com.googlecode.aviator.AviatorEvaluator;
+
+import helper.AviatorExpHelper;
+import helper.ComplexAttrMapCacheHelper;
+import model.AttrConf;
+import model.AttrType;
 import model.CalType;
 import service.CalculatorService.AttrValue;
 
@@ -12,17 +22,23 @@ import service.CalculatorService.AttrValue;
  * @author janke
  * @date 2018/12/11.
  */
-@Component
 public class Calculater {
 
 	public static final Logger LOG = LoggerFactory.getLogger(Calculater.class);
 	
-	@Autowired
-	JedisService jedisService;
+	private JedisService jedisService;
+	private Map<String, List<AttrConf>> complexMapCache;
+	
+	public Calculater(JedisService jedisService) {
+		this.jedisService = jedisService;
+	}
 	
 	public String cal(AttrValue attrValue) throws Exception{
+		complexMapCache = ComplexAttrMapCacheHelper.instance().getAll();
 		CalType calType = attrValue.getCalType();
+		AttrType attrType = attrValue.getAttrType();
 		String restVal = null;
+
 		switch (calType) {
 		case APPEND:
 				restVal = calAppend(attrValue);
@@ -46,7 +62,15 @@ public class Calculater {
 			LOG.error("can not solve type:[{}]", calType);
 			throw new IllegalArgumentException(String.format("can not solve type:[%s]", calType));
 		}
+		if (AttrType.REAL.equals(attrType)) {
+			List<AttrConf> complexAttr = complexMapCache.get(attrValue.getAid());
+			handleComplexAttr(complexAttr, attrValue.getKey());
+		}
 		return restVal;
+	}
+	
+	private Object handleComplexAttr(List<AttrConf> complexAttr, String key) {
+		return null;
 	}
 	
 	public String calAppend(AttrValue attrValue) {
@@ -164,6 +188,8 @@ public class Calculater {
 	}
 	
 	public String calAviExp(AttrValue attrValue) {	
-		return null;
+		String exp = attrValue.getExp();
+		Map<String, Object> env = attrValue.getData();
+		return AviatorExpHelper.excute(exp, env);
 	}
 }
