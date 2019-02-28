@@ -1,15 +1,12 @@
 package helper;
 
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.springframework.util.CollectionUtils;
-
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
-
 import conf.MapperHelper;
 import mapper.AttrConfMapper;
 import model.AttrConf;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ComplexAttrMapCacheHelper extends CacheHelper<String, List<AttrConf>> {
 	private AttrConfMapper attrConfMapper;
@@ -33,7 +30,7 @@ public class ComplexAttrMapCacheHelper extends CacheHelper<String, List<AttrConf
 
 	@Override
 	protected ConcurrentHashMap<String, List<AttrConf>> getNew() {
-		ConcurrentHashMap<String, List<AttrConf>> cache = new ConcurrentHashMap<>();
+		ConcurrentHashMap<String, List<AttrConf>> cache = new ConcurrentHashMap<String, List<AttrConf>>();
 		List<AttrConf> attrConfs = attrConfMapper.getAll();
 		for (AttrConf attrConf : attrConfs) {
 			String attrId = attrConf.getAid();

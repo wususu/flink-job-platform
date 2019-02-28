@@ -1,4 +1,4 @@
-package web;
+package com.yuki.bigdata;
 
 /**
  * Hello world!

@@ -6,8 +6,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.util.ResourceBundle;
-
 /**
  * @author janke
  * @date 2018/12/11.
@@ -47,7 +45,6 @@ public class JedisService {
 //    	 jedis = jedisPool.getResource();
     	 return jedis.hget(attrId, keyId);
     }
-    
-    
+
 
 }

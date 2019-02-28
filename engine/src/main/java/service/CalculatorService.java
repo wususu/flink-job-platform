@@ -1,24 +1,15 @@
 package service;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
+import model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
-import clojure.lang.Obj;
-import model.AttrConf;
-import model.AttrType;
-import model.BinLogType;
-import model.CUDModel;
-import model.CalType;
-import model.FieldType;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class CalculatorService {
@@ -76,7 +67,7 @@ public class CalculatorService {
 			return clazz.cast(rawVal);
 		}
 		
-		public class AttrValue{
+		public static class AttrValue{
 			private AttrType attrType;
 			private Object currentValue;
 			private Object newValue;
@@ -86,7 +77,10 @@ public class CalculatorService {
 			private String key;
 			private CalType calType;
 			private Class<?> clazz;
-			
+
+			public AttrValue() {
+
+			}
 			public AttrValue(String exp, Map<String, Object> data, String aid, String key, CalType calType, Class<?> clazz) {
 				super();
 				this.exp = exp;

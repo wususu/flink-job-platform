@@ -1,22 +1,20 @@
 package service;
 
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
-import com.googlecode.aviator.AviatorEvaluator;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import helper.AviatorExpHelper;
 import helper.ComplexAttrMapCacheHelper;
 import model.AttrConf;
 import model.AttrType;
 import model.CalType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.CalculatorService.AttrValue;
+
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author janke
@@ -64,13 +62,39 @@ public class Calculater {
 		}
 		if (AttrType.REAL.equals(attrType)) {
 			List<AttrConf> complexAttr = complexMapCache.get(attrValue.getAid());
-			handleComplexAttr(complexAttr, attrValue.getKey());
+
+			Map<String,String> calRest = handleComplexAttr(complexAttr, attrValue.getKey());
+			for(Map.Entry<String, String> kv: calRest.entrySet()) {
+				String aid = kv.getKey();
+				String value = kv.getValue();
+				jedisService.hset(aid, attrValue.getKey(), value);
+			}
 		}
 		return restVal;
 	}
 	
-	private Object handleComplexAttr(List<AttrConf> complexAttr, String key) {
-		return null;
+	private Map handleComplexAttr(List<AttrConf> complexAttrs, String key) {
+		Map<String,String> attrRestVal = Maps.newHashMap();
+		for (AttrConf complexAttr: complexAttrs) {
+			String exp = complexAttr.getCalExpression();
+			Pattern p= Pattern.compile("fr\\d+");
+			Matcher m=p.matcher(exp);
+			List<String> subAttrIds = Lists.newArrayList();
+			while (m.find()) {
+				subAttrIds.add(m.group().trim());
+			}
+			Map<String, Object> env = Maps.newHashMap();
+			for (String subAttrId: subAttrIds) {
+				String value = jedisService.hget(subAttrId, key);
+				env.put(subAttrId, value);
+			}
+			AttrValue attrValue = new AttrValue();
+			attrValue.setExp(exp);
+			attrValue.setData(env);
+			String restVal = calAviExp(attrValue);
+			attrRestVal.put(complexAttr.getAid(), restVal);
+		}
+		return attrRestVal;
 	}
 	
 	public String calAppend(AttrValue attrValue) {
@@ -191,5 +215,9 @@ public class Calculater {
 		String exp = attrValue.getExp();
 		Map<String, Object> env = attrValue.getData();
 		return AviatorExpHelper.excute(exp, env);
+	}
+
+	public static void main(String[] args) {
+
 	}
 }
