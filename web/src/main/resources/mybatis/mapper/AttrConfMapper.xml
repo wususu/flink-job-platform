@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.AttrConfMapper" >
+    <resultMap id="BaseResultMap" type="model.AttrConf" >
+        <id column="aid" property="aid" jdbcType="VARCHAR" />
+        <result column="table_id" property="tableId" javaType="INTEGER" />
+        <result column="attr_type" property="attrType" javaType="INTEGER" />
+        <result column="cal_type" property="calType" javaType="INTEGER"/>
+        <result column="db_name" property="dbName" jdbcType="VARCHAR" />
+        <result column="tbl_name" property="tblName" jdbcType="VARCHAR" />
+        <result column="dimension_type" property="dimensionType" jdbcType="VARCHAR" />
+        <result column="dimension_key" property="dimensionKey" jdbcType="VARCHAR" />
+        <result column="field" property="field" jdbcType="VARCHAR" />
+        <result column="field_type" property="fieldType" jdbcType="VARCHAR" />
+        <result column="cal_expression" property="calExpression" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="is_online" property="isOnline" jdbcType="INTEGER" />
+    </resultMap>
+</mapper>
