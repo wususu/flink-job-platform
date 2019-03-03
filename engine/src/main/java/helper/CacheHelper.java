@@ -19,6 +19,10 @@ public abstract class CacheHelper<K, V> {
 	}
 	
 	public Map<K, V> getAll() {
+		if (cache == null) {
+			prepare();
+			cache = getNew();
+		}
 		return cache;
 	}
 	

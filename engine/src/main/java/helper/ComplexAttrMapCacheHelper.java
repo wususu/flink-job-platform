@@ -15,7 +15,7 @@ public class ComplexAttrMapCacheHelper extends CacheHelper<String, List<AttrConf
 	
 	public static ComplexAttrMapCacheHelper instance() {
 		if (singleton == null) {
-			synchronized (singleton) {
+			synchronized (ComplexAttrMapCacheHelper.class) {
 				if (singleton == null) {
 					singleton = new ComplexAttrMapCacheHelper();
 				}

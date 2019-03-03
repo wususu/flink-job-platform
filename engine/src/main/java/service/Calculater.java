@@ -102,13 +102,13 @@ public class Calculater {
 			LOG.error("calType is APPEND, but field type isn't String,fieldType:[{}] ", attrValue.getCalType().val);
 			throw new IllegalArgumentException(String.format("can not cal APPEND of type: [%s]", attrValue.getValClazz().getName()));
 		}
-		Object currentVal = attrValue.getCurrentValue();
+		Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 		Object newVal = attrValue.getNewValue();
 		if (newVal == null) {
 			newVal = "nil";
 		}
 		if (currentVal == null) {
-			currentVal = "";
+			return String.valueOf(newVal);
 		}
 		String restVal = String.valueOf(currentVal) + "," + String.valueOf(newVal);
 		return String.valueOf(restVal);
@@ -116,27 +116,27 @@ public class Calculater {
 	
 	public String calMax(AttrValue attrValue) {
 		if (Integer.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Integer restVal = Integer.class.cast(currentObj) <= Integer.class.cast(newObj) ?Integer.class.cast(newObj) : Integer.class.cast(currentObj);
+			Integer restVal = Integer.class.cast(currentVal) <= Integer.class.cast(newObj) ?Integer.class.cast(newObj) : Integer.class.cast(currentVal);
 			return String.valueOf(restVal);
 		}
 		else if( Double.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Double restVal = Double.class.cast(currentObj) <= Double.class.cast(newObj) ?Double.class.cast(newObj) : Double.class.cast(currentObj);
+			Double restVal = Double.class.cast(currentVal) <= Double.class.cast(newObj) ?Double.class.cast(newObj) : Double.class.cast(currentVal);
 			return String.valueOf(restVal);
 		}else {
 			LOG.error("can not cal Max of type: [{}]", attrValue.getValClazz().getName());
@@ -146,27 +146,27 @@ public class Calculater {
 	
 	public String calMin(AttrValue attrValue) {
 		if (Integer.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Integer restVal = Integer.class.cast(currentObj) >= Integer.class.cast(newObj) ?Integer.class.cast(newObj) : Integer.class.cast(currentObj);
+			Integer restVal = Integer.class.cast(currentVal) >= Integer.class.cast(newObj) ?Integer.class.cast(newObj) : Integer.class.cast(currentVal);
 			return String.valueOf(restVal);
 		}
 		else if( Double.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Double restVal = Double.class.cast(currentObj) >= Double.class.cast(newObj) ?Double.class.cast(newObj) : Double.class.cast(currentObj);
+			Double restVal = Double.class.cast(currentVal) >= Double.class.cast(newObj) ?Double.class.cast(newObj) : Double.class.cast(currentVal);
 			return String.valueOf(restVal);
 		}else {
 			LOG.error("can not cal Min of type: [{}]", attrValue.getValClazz().getName());
@@ -176,27 +176,27 @@ public class Calculater {
 	
 	public String calAdd(AttrValue attrValue) {
 		if (Integer.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Integer restVal = Integer.class.cast(currentObj) + Integer.class.cast(newObj);
+			Integer restVal = Integer.class.cast(currentVal) + Integer.class.cast(newObj);
 			return String.valueOf(restVal);
 		}
 		else if (Double.class.equals(attrValue.getValClazz())) {
-			Object currentObj = attrValue.getCurrentValue();
+			Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 			Object newObj = attrValue.getNewValue();
-			if (currentObj == null) {
-				currentObj = 0;
+			if (currentVal == null) {
+				currentVal = 0;
 			}
 			if (newObj == null) {
 				newObj = 0;
 			}
-			Double restVal = Double.class.cast(currentObj) + Double.class.cast(newObj);
+			Double restVal = Double.class.cast(currentVal) + Double.class.cast(newObj);
 			return String.valueOf(restVal);
 		}
 		else {
@@ -206,7 +206,7 @@ public class Calculater {
 	}
 
 	public String calNew(AttrValue attrValue) {
-		Object currentObj = attrValue.getCurrentValue();
+		Object currentVal = jedisService.hget(attrValue.getAid(), attrValue.getKey());
 		Object newObj = attrValue.getNewValue();
 		return String.valueOf(newObj);
 	}

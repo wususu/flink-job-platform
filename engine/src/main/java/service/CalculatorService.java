@@ -2,11 +2,14 @@ package service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -34,19 +37,22 @@ public class CalculatorService {
 					CalType calType = CalType.get(attrConf.getCalType());
 					Class<?> clazz = getClass(attrConf);
 					if (CalType.AVIEXP.equals(calType)) {
-						Map<String, String> data = null;
+						Map<String, Object> data = Maps.newHashMap();
 						if (!BinLogType.DELETE.equals(model.getType())) {
-							data = model.getOld();
-							data.putAll(model.getData());
+							if (!CollectionUtils.isEmpty(model.getOld())) {
+								data.putAll(model.getOld());
+							}
+							if (!CollectionUtils.isEmpty(model.getData())) {
+								data.putAll(model.getData());
+							}
 						}
-						attrValue = new AttrValue(attrConf.getCalExpression(), data, attrId, key, calType, clazz);
+						attrValue = AttrValue.newAviatorValue(attrConf.getCalExpression(), data, attrId, key, calType, clazz);
 						attrValues.add(attrValue);
 						continue;
 					}
-					Object current = jedisService.hget(attrId, key);
 
 					Object newVal = execNewValue(model, attrConf, clazz);
-					attrValue = new AttrValue(current, newVal, attrId, key, calType, clazz);
+					attrValue = new AttrValue(newVal, attrId, key, calType, clazz);
 					attrValues.add(attrValue);
 					}catch (Exception e) {
 						LOG.error(e.getMessage(), e);
@@ -69,7 +75,6 @@ public class CalculatorService {
 		
 		public static class AttrValue{
 			private AttrType attrType;
-			private Object currentValue;
 			private Object newValue;
 			private String exp;
 			private Map<String, Object> data;
@@ -81,32 +86,24 @@ public class CalculatorService {
 			public AttrValue() {
 
 			}
-			public AttrValue(String exp, Map<String, Object> data, String aid, String key, CalType calType, Class<?> clazz) {
-				super();
-				this.exp = exp;
-				this.data = data;
-				this.aid = aid;
-				this.key = key;
-				this.calType = calType;
-				this.clazz = clazz;
+			public static AttrValue  newAviatorValue(String exp, Map<String, Object> data, String aid, String key, CalType calType, Class<?> clazz) {
+				AttrValue attrValue = new AttrValue();
+				attrValue.setExp(exp);
+				attrValue.setData(data);
+				attrValue.setAid(aid);
+				attrValue.setKey(key);
+				attrValue.setCalType(calType);
+				attrValue.setClazz(clazz);
+				return attrValue;
 			}
 			
-			public AttrValue(Object currentValue,Object newValue, String aid, String key, CalType calType, Class<?> clazz) {
+			public AttrValue(Object newValue, String aid, String key, CalType calType, Class<?> clazz) {
 				super();
-				this.currentValue = currentValue;
 				this.newValue = newValue;
 				this.aid = aid;
 				this.key = key;
 				this.calType = calType;
 				this.clazz = clazz;
-			}
-
-			public Object getCurrentValue() {
-				return currentValue;
-			}
-
-			public void setCurrentValue(Object currentValue) {
-				this.currentValue = currentValue;
 			}
 
 			public Object getNewValue() {

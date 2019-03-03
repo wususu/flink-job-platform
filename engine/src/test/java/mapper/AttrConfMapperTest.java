@@ -25,23 +25,23 @@ public class AttrConfMapperTest {
     @Test
     public void testInsert() throws Exception{
         AttrConf attrConf = new AttrConf();
-        attrConf.setAid("fr20191");
+        attrConf.setAid("fr20193");
         attrConf.setAttrType(1);
         attrConf.setCalExpression(null);
-        attrConf.setCalType(1);
+        attrConf.setCalType(6);
         attrConf.setCreateTime(new Date());
         attrConf.setDbName("test_maxwell");
         attrConf.setTblName("user_info");
         attrConf.setDimensionKey("userid");
-        attrConf.setDimensionType("Integer");
-        attrConf.setField("name");
+        attrConf.setDimensionType("u");
+        attrConf.setField("name + userid +','");
         attrConf.setFieldType(FieldType.STRING.val);
         attrConf.setIsOnline(1);
         attrConf.setTableId(3);
         attrConfMapper.insert(attrConf);
     }
     
-    @Test
+//    @Test
     public void testGet() {
     	List<String> realIds = attrConfMapper.getRealAttrByComplexAttrId("fr20192");
     	List<String> complexIds = attrConfMapper.getComplexAttrByRealAttrId("fr20191");

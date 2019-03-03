@@ -1,6 +1,9 @@
 package service;
 
 import conf.Configurator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -13,6 +16,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @Component
 public class JedisService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(JedisPool.class);
+	
     public static final String REDIS_POOL_MAXIDLE = "redis.pool.maxIdle";
     public static final String REDIS_POOL_MAXWAIT = "redis.pool.maxWait";
     public static final String REDIS_POOL_TEST_ON_BORROW = "redis.pool.testOnBorrow";
@@ -33,18 +38,42 @@ public class JedisService {
         config.setMaxWaitMillis(Configurator.getInt(REDIS_POOL_MAXWAIT));
         config.setTestOnBorrow(Configurator.getBoolean(REDIS_POOL_TEST_ON_BORROW));
         config.setTestOnReturn(Configurator.getBoolean(REDIS_POOL_TEST_ON_RETURN));
-        jedisPool = new JedisPool(config, host, port);
-        jedis = jedisPool.getResource();
+        jedisPool = new JedisPool(config, host, port, 100000);
     }
 
-    public void hset(String attrId, String keyId, String value) {
+    public synchronized void hset(String attrId, String keyId, String value) {
+        Jedis jedis = jedis = jedisPool.getResource();
+        try{
         jedis.hset(attrId, keyId, value);
+        }finally {
+			closeJedis(jedis);
+		}
     }
 
     public String hget(String attrId, String keyId) {
 //    	 jedis = jedisPool.getResource();
-    	 return jedis.hget(attrId, keyId);
+        Jedis jedis = jedis = jedisPool.getResource();
+        String value = null;
+        try{
+    	 value =  jedis.hget(attrId, keyId);
+        }finally{
+        	closeJedis(jedis);
+        }
+        return value;
     }
-
+    public static void closeJedis(Jedis jedis) {
+        try {
+            if (jedis != null) {
+            	
+                /*jedisPool.returnBrokenResource(jedis);
+                jedisPool.returnResource(jedis);
+                jedisPool.returnResourceObject(jedis);*/
+                //高版本jedis close 取代池回收
+                jedis.close();
+            }
+        } catch (Exception e) {
+            LOG.error("释放资源异常：" + e);
+        }
+    }
 
 }
