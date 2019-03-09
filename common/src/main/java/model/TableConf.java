@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TableConf {
 
-    private int id;
+    private Integer id;
     private String type;
     private String name;
     private String topic;
@@ -13,11 +13,11 @@ public class TableConf {
     private String creater;
     private int isOnline;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
