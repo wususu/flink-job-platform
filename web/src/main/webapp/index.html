@@ -19,32 +19,42 @@
 </header>
 
 <body>
-                        <a href="#" >
-                                <img id="logo" height="300" width="100%"  src="static/image/timg.png" class="m-img">
-                        </a>
+
         <div class="header">
 
                 <ul class="nav nav-tabs">
                         <li role="presentation" class="active"><a href="#">Home</a></li>
-                        <li role="presentation"><a href="#">Profile</a></li>
-                        <li role="presentation"><a href="#">Messages</a></li>
+                        <li role="presentation"><a id="showTableForm" href="#">添加数据源表</a></li>
+                        <li role="presentation"><a id="showAttrForm" href="#">添加属性</a></li>
+                        <li role="presentation"><a id="showRealDataForm" href="#">数据查询</a></li>
+
                 </ul>
                 
         </div>
-      <div class="container">
+        <div class="container">
                 <div id="tableForm">
                         <form>
                                 <div class="col-xs-12">
+                                        <div class="col-xs-2">
+                                                <label for="exampleInputPassword1">库名</label>
+                                                <input id="databaseName" type="text" class="form-control"  placeholder="属性类型">
+                                        </div>
                                         <div class="col-xs-2" >
                                                 <label for="exampleInputEmail1">表名</label>
-                                                <input type="email" class="form-control"  placeholder="属性id">
-                                        </div>
-                                        <div class="col-xs-2">
-                                                <label for="exampleInputPassword1">Topic</label>
-                                                <input type="text" class="form-control"  placeholder="属性类型">
+                                                <input id="tableName" type="text" class="form-control"  placeholder="属性id">
                                         </div>
                                 </div>
-
+                                <div class="col-xs-12">
+                                        <div class="col-xs-2">
+                                                <label for="exampleInputPassword1">Topic</label>
+                                                <input id="topicName" type="text" class="form-control"  placeholder="属性类型">
+                                        </div>
+                                </div>
+                                <div class="col-xs-12">
+                                        <div class="checkbox">
+                                        </div>
+                                        <button id="submitTableForm" type="submit" class="btn btn-info">Submit</button>
+                                </div>
                         </form>
                 </div>
                 <div id="attrForm">
@@ -92,16 +102,29 @@
                                 </div>
                         </div>
                             <div class="col-xs-12">
-                                    <div class="checkbox">
-                                            <label>
-                                              <input type="checkbox"> Check me out
-                                            </label>
-                                          </div>
-                                          <button type="submit" class="btn btn-info">Submit</button>
+                                        <div class="checkbox">
+                                                </div>
+                                <button id="submitAttrForm" type="submit" class="btn btn-info">Submit</button>
                             </div>
                     </form>
-            </div>
-
+                </div>
+                <div id="realDataForm">
+                        <div class="col-xs-12">
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1"></label>
+                                        <input type="email" class="form-control"  placeholder="属性id">
+                                </div>
+                                <div class="col-xs-2" >
+                                                <label for="exampleInputEmail1"></label>
+                                                <input type="email" class="form-control"  placeholder="维度：维度ID">
+                                        </div>
+                        </div>
+                        <div class="col-xs-12">
+                                        <div class="checkbox">
+                                                </div>
+                                        <button id="submitAttrForm" type="submit" class="btn btn-info">Submit</button>
+                        </div>
+                </div>
         </div>
 </body>
 <script type="text/javascript">
@@ -111,7 +134,43 @@
                 function init() {
                         $("#tableForm").hide();
                         $("#attrForm").hide();
+                        $("#realDataForm").hide();
+                        
                 }
+                $("#submitTableForm").click(function() {
+                        var databaseName = $("#databaseName").val();
+                        var tableName = $("#tableName").val();
+                        var topic = $("#topicName").val();
+                        if(!databaseName || !tableName || !topic) {
+                                alert("数据库名|表名|Topic 为必须");
+                        }
+                        var name = databaseName + "." + tableName;
+                        console.log("name: " + name);
+                        console.log("topic: " + topic);
+                        // ajax.Post
+
+                });
+                $("#submitAttrForm").click(function() {
+                
+                });
+
+                $("#showTableForm").click(function(){
+                        $("#tableForm").show();
+                        $("#attrForm").hide();
+                        $("#realDataForm").hide();
+
+                });
+                $("#showAttrForm").click(function(){
+                        $("#tableForm").hide();
+                        $("#realDataForm").hide();
+
+                        $("#attrForm").show();
+                });
+                $("#showRealDataForm").click(function(){
+                        $("#tableForm").hide();
+                        $("#attrForm").hide();
+                        $("#realDataForm").show();
+                });
 
 
         });

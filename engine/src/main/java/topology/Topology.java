@@ -45,11 +45,11 @@ public class Topology {
         KafkaSpoutConfig.Builder<String, String> kafkaSpoutConfigBuilder = new KafkaSpoutConfig.Builder("95.163.197.216:9092",StringDeserializer.class,
                 StringDeserializer.class,"maxwell").setFirstPollOffsetStrategy(FirstPollOffsetStrategy.LATEST);
         KafkaSpoutConfig<String, String> kafkaConfig = kafkaSpoutConfigBuilder.build();
+        KafkaSpout kafkaSpout = new KafkaSpout<String, String>(kafkaConfig);
         
         
         
-        
-        tp.setSpout(KAFKA_BINLOG_SPOUT, new KafkaSpout<String, String>(kafkaConfig));
+        tp.setSpout(KAFKA_BINLOG_SPOUT, kafkaSpout);
         tp.setBolt(DISPATCH_BOLT, new DispatchBolt()).shuffleGrouping(KAFKA_BINLOG_SPOUT);
         tp.setBolt(BINLOG_CALCULATE_BOLT, new CalBinLogBolt()).shuffleGrouping(DISPATCH_BOLT);
         tp.setBolt(CALCULATE_BOLT, new CalculatorBolt()).fieldsGrouping(BINLOG_CALCULATE_BOLT, new Fields("attrId"));

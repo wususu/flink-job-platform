@@ -46,12 +46,9 @@ public class DispatchBolt extends BaseRichBolt {
 
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector collector) {
         this.collector = collector;
-//        tableConfMapper = MapperHelper.getMapper(TableConfMapper.class);
         attrConfMapper = MapperHelper.getMapper(AttrConfMapper.class);
-//        List<TableConf> tableConfs = tableConfMapper.getAll();
         List<AttrConf> attrConfMappers = attrConfMapper.getAll();
     }
-
     public void execute(Tuple tuple) {
         String raw = tuple.getStringByField("value");
         if (StringUtils.isNotBlank(raw)){
