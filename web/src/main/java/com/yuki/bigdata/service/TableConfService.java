@@ -22,6 +22,7 @@ public class TableConfService {
 	public boolean create(TableConf tableConf) {
 		tableConf.setId(null);
 		tableConf.setCreateTime(new Date());
+		tableConf.setCreater("admin");
 		tableConf.setOfflineTime(null);
 		tableConf.setIsOnline(0);
 		int rest = tableConfMapper.insert(tableConf);

@@ -2,19 +2,27 @@ package com.yuki.bigdata.controller;
 
 import com.yuki.bigdata.dto.AttrConfQuery;
 import com.yuki.bigdata.service.AttrConfService;
+import com.yuki.bigdata.service.JedisService;
+
 import model.AttrConf;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Maps;
 import com.yuki.bigdata.dto.ActionRest;
 import com.yuki.bigdata.dto.TableConfQuery;
 import com.yuki.bigdata.service.TableConfService;
 
 import common.XPage;
 import model.TableConf;
+import sun.tools.jar.resources.jar;
 
 @RestController
 @RequestMapping(value="/api")
@@ -25,6 +33,9 @@ public class RestApiController {
 
 	@Autowired
 	AttrConfService attrConfService;
+	
+	@Autowired
+	JedisService jedisService;
 
 	@RequestMapping("/hello")
 	public String hello() {
@@ -55,7 +66,7 @@ public class RestApiController {
 			return ActionRest.error(e);
 		}
 	}
-
+	
 	@RequestMapping("/attr/page.do")
 	public ActionRest pageAttr(@RequestBody(required = false) AttrConfQuery attrConfQuery) {
 		try {
@@ -80,7 +91,14 @@ public class RestApiController {
 			return ActionRest.error(e);
 		}
 	}
-
-
 	
+	@RequestMapping(value="/real/result/{attrId}/{dimensionKey}", method=RequestMethod.GET)
+	public ActionRest searchResult(@PathVariable("attrId") String attrId, @PathVariable("dimensionKey")String dimensionKey) {
+		String value = jedisService.hget(attrId, dimensionKey);
+		Map<String, String> data = Maps.newHashMap();
+		data.put("attrId", attrId);
+		data.put("dimensionKey", dimensionKey);
+		data.put("result", value);
+		return ActionRest.sucess(data);
+	}
 }

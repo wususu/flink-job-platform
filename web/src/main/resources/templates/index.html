@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<header>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <style type="text/css">
+                #logo{
+                   display: block;
+                　　max-width: 100%;
+                　　height: 40px;
+                }
+        </style>
+</header>
+
+<body>
+
+        <div class="header">
+
+                <ul class="nav nav-tabs">
+                        <li role="presentation"><a id="showTableList" href="#">数据源</a></li>
+                        <li role="presentation"><a id="showAttrList" href="#">属性</a></li>
+                        <li role="presentation"><a id="showTableForm" href="#">添加数据源表</a></li>
+                        <li role="presentation"><a id="showAttrForm" href="#">添加属性</a></li>
+                        <li role="presentation"><a id="showRealDataForm" href="#">数据查询</a></li>
+
+                </ul>
+                
+        </div>
+        <div class="container">
+                <div id="tableList">
+                        <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">数据源表</div>
+                        <!-- <div class="panel-body">
+                        <p>...</p>
+                        </div> -->
+
+                        <!-- Table -->
+                        <table class="table">
+                                <thead>
+                                        <tr>
+                                                <th>#</th>
+                                                <th>数据库</th>
+                                                <th>表</th>
+                                                <th>topic</th>
+                                        </tr>
+                                </thead>
+                                <tbody id="table">
+                                </tbody>
+                        </table>
+                </div>
+                </div>
+                <div id="attrList">
+                        <div class="panel panel-default">
+                                 <!-- Default panel contents -->
+                                <div class="panel-heading">属性</div>
+                                <!-- <div class="panel-body">
+                                <p>...</p>
+                                </div> -->
+                        
+                                <!-- Table -->
+                                <table class="table">
+                                        <thead>
+                                                <tr>
+                                                        <th>属性Id</th>
+                                                        <th>属性类型</th>
+                                                        <th>计算类型</th>
+                                                        <th>维度类型</th>
+                                                </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                </table>
+                        </div>
+                </div>
+                <div id="tableForm">
+                        <form>
+                                <div class="col-xs-12">
+                                        <div class="col-xs-2">
+                                                <label for="exampleInputPassword1">库名</label>
+                                                <input id="databaseName" type="text" class="form-control"  placeholder="属性类型">
+                                        </div>
+                                        <div class="col-xs-2" >
+                                                <label for="exampleInputEmail1">表名</label>
+                                                <input id="tableName" type="text" class="form-control"  placeholder="属性id">
+                                        </div>
+                                </div>
+                                <div class="col-xs-12">
+                                        <div class="col-xs-2">
+                                                <label for="exampleInputPassword1">Topic</label>
+                                                <input id="topicName" type="text" class="form-control"  placeholder="属性类型">
+                                        </div>
+                                </div>
+                                <div class="col-xs-12">
+                                        <div class="checkbox">
+                                        </div>
+                                        <button id="submitTableForm" type="submit" class="btn btn-info">Submit</button>
+                                </div>
+                        </form>
+                </div>
+                <div id="attrForm">
+                    <form>
+                            <div class="col-xs-12">
+                                    <div class="col-xs-2" >
+                                            <label for="exampleInputEmail1">属性Id</label>
+                                            <input id="attrId" type="text" class="form-control"  placeholder="属性id">
+                                          </div>
+                                          <div class="col-xs-2">
+                                            <label for="exampleInputPassword1">属性类型</label>
+                                            <input id="attrType" type="text" class="form-control"  placeholder="属性类型">
+                                          </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1">数据源表</label>
+                                        <input id="" type="text" class="form-control"  placeholder="数据源表">
+                                      </div>
+                        </div>
+                            <div class="col-xs-12">
+                                    <div class="col-xs-2" >
+                                            <label for="exampleInputEmail1">计算类型</label>
+                                            <input id="calType" type="text" class="form-control"  placeholder="计算类型">
+                                    </div>
+                                    <div class="col-xs-2">
+                                            <label for="exampleInputPassword1">列名</label>
+                                            <input id="columnName" type="text" class="form-control"  placeholder="列名">
+                                        </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1">维度类型</label>
+                                        <input id="dimensionType" type="text" class="form-control"  placeholder="维度类型">
+                                </div>
+                                <div class="col-xs-2">
+                                        <label for="exampleInputPassword1">维度ID</label>
+                                        <input id="dimensionKey" type="text" class="form-control"  placeholder="维度ID">
+                                    </div>
+                        </div>
+                        <div class="col-xs-12">
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1">求值表达式</label>
+                                        <input id="aviExp" type="text" class="form-control"  placeholder="求值表达式">
+                                </div>
+                        </div>
+                            <div class="col-xs-12">
+                                        <div class="checkbox">
+                                                </div>
+                                <button id="submitAttrForm" type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                    </form>
+                </div>
+                <div id="realDataForm">
+                        <div class="col-xs-12">
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1"></label>
+                                        <input type="text" class="form-control"  placeholder="属性id">
+                                </div>
+                                <div class="col-xs-2" >
+                                        <label for="exampleInputEmail1"></label>
+                                        <input type="text" class="form-control"  placeholder="维度：维度ID">
+                                </div>
+                        </div>
+                        <div class="col-xs-12">
+                                <div class="checkbox">
+                                </div>
+                                <button id="submitAttrForm" type="submit" class="btn btn-info">Submit</button>
+                        </div>
+                </div>
+        </div>
+</body>
+<script type="text/javascript">
+        $(document).ready(function(){
+                let base_url = "http://localhost:8888/svr/api";
+                init();
+
+                function get(uri, params) {
+                        var qurl = base_url + uri;
+                        $.ajax({
+                                type: "GET",
+                                url: qurl,
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function(message) {
+                                        console.log(message);
+                                        alert("success");
+                                },
+                                error: function(message) {
+                                        alert("fail");
+                                }
+                        })
+                }
+
+                function post(uri, params,fun) {
+                        var qurl = base_url +uri;
+                        console.log(uri);
+
+                        console.log(qurl);
+                        $.ajax({
+                                type: "POST",
+                                url: qurl,
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(params),
+                                dataType: "json",
+                                success: function (message) {
+                                        console.log(message);
+                                        fun(message);
+                                },
+                                error: function (message) {
+                                        console.log(message);
+                                        alert("fail");
+                                }
+                        })
+                }
+
+
+                function init() {
+                        $("#tableForm").hide();
+                        $("#attrForm").hide();
+                        $("#realDataForm").hide();
+                        $("#attrList").hide();
+                        getTableConfList({
+                                "pageNo":1
+                        });
+                        
+                }
+                $("#submitTableForm").click(function() {
+                        console.log("click");
+                        var databaseName = $("#databaseName").val();
+                        var tableName = $("#tableName").val();
+                        var topic = $("#topicName").val();
+                        if(!databaseName || !tableName || !topic) {
+                                alert("数据库名|表名|Topic 为必须");
+                        }
+                        var name = databaseName + "." + tableName;
+                        console.log("name: " + name);
+                        console.log("topic: " + topic);
+                        // ajax.Post
+                        var params = {
+                                "topic": topic,
+                                "name": databaseName+"."+tableName
+                        }
+                        post("/table/create.do", params, function(){
+                                alert("success");
+                        });
+
+                });
+                $("#submitAttrForm").click(function() {
+                        var attrId = $("#attrId").val();
+                        var attrType = $("#attrType").val();
+                        var calType = $("#calType");
+                        var field = $("#columnName");
+                        var dimensionType = $("#dimensionType");
+                        var dimensionKey = $("#dimensionKey");
+                        var aviExp = $("#aviExp");
+                });
+
+                $("#showTableForm").click(function(){
+                        $("#tableForm").show();
+                        $("#attrForm").hide();
+                        $("#realDataForm").hide();
+                        $("#attrList").hide();
+                        $("#tableList").hide();
+
+                });
+                $("#showAttrForm").click(function(){
+                        $("#tableForm").hide();
+                        $("#realDataForm").hide();
+                        $("#attrList").hide();
+                        $("#tableList").hide();
+                        $("#attrForm").show();
+                });
+                $("#showRealDataForm").click(function(){
+                        $("#tableForm").hide();
+                        $("#attrForm").hide();
+                        $("#attrList").hide();
+                        $("#tableList").hide();
+                        $("#realDataForm").show();
+                });
+
+                $("#showAttrList").click(function() {
+                        $("#tableForm").hide();
+                        $("#realDataForm").hide();
+                        $("#attrForm").hide();
+                        $("#tableList").hide();
+                        $("#attrList").show();
+                        var params = {
+                                "pageNo":1
+                        }
+                        getAttrConfList(params);
+
+                });
+                $("#showTableList").click(function(){
+                        $("#tableForm").hide();
+                        $("#realDataForm").hide();
+                        $("#attrForm").hide();
+                        $("#attrList").hide();
+                        $("#tableList").show();
+                        var params = {
+                                "pageNo":1
+                        }
+                        getTableConfList(params);
+
+                });
+                
+                function getAttrConfList(params) {
+                        post(
+                                "/attr/page.do",
+                                params,
+                                function(message) {
+                                        if(message.code == 0) {
+                                                var div_show = $("div#attrList tbody");
+
+                                                var data = "";
+                                                $.each(message.data.result, function(i, val){
+                                                        data= data+'<tr>'+
+                                                                '<th scope="row">'+val.aid+'</th>'+
+                                                                '<td>'+genAttrType(val.attrType)+'</td>'+
+                                                                '<td>'+genCalType(val.calType)+'</td>'+
+                                                                '<td>'+val.dimensionType+'</td>'+
+                                                        '</tr>';
+                                                });
+                                                div_show.empty()
+                                                div_show.append(data);
+
+                                        }else{
+                                                alert("请求失败");
+                                        }
+                                }
+                        )
+                }
+
+                function getTableConfList(params) {
+                        post(
+                                "/table/page.do", 
+                                params,
+                                function(message){
+                                        if(message.code == 0) {
+                                                var div_show = $("div#tableList tbody");
+
+                                                var data = "";
+                                                $.each(message.data.result, function(i, val){
+                                                        var fullName = val.name.split(".");
+                                                        var tblName = fullName[1];
+                                                        var dbName = fullName[0];
+                                                        data= data+'<tr>'+
+                                                                '<th scope="row">'+val.id+'</th>'+
+                                                                '<td>'+dbName+'</td>'+
+                                                                '<td>'+tblName+'</td>'+
+                                                                '<td>'+val.topic+'</td>'+
+                                                        '</tr>';
+                                                });
+                                                div_show.empty()
+                                                div_show.append(data);
+
+                                        }else{
+                                                alert("请求失败");
+                                        }
+                                });
+                }
+
+                function genCalType(code) {
+                        if(code == 1) {
+                                return "字符串拼接";
+                        }
+                        if(code == 2) {
+                                return "求和";
+                        } 
+                        if(code == 3) {
+                                return "取最大值";
+                        }
+                        if(code == 4) {
+                                return "取最小值";
+                        }
+                        if(code == 5) {
+                                return "取最新值";
+                        }
+                        if(code == 6) {
+                                return "aviator表达式";
+                        }
+                        return "unknow";
+                }
+
+                function genAttrType(code) {
+                        if(code == 1) {
+                                return "实时";
+                        }
+                        if(code = 2) {
+                                return "复合";
+                        }
+                        return "unknow";
+                }
+
+        });
+</script>
+</html>
+
