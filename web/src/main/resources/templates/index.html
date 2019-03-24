@@ -114,7 +114,13 @@
                                           </div>
                                           <div class="col-xs-2">
                                             <label for="exampleInputPassword1">属性类型</label>
-                                            <input id="attrType" type="text" class="form-control"  placeholder="属性类型">
+                                            <div class="input-group-btn">
+                                                <button type="button" id="attrType" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">实时 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                  <li ><a id="reala" href="#">实时</a></li>
+                                                  <li ><a id="complex" href="#">复合</a></li>
+                                                </ul>
+                                              </div>
                                           </div>
                             </div>
                             <div class="col-xs-12">
@@ -124,10 +130,20 @@
                                       </div>
                         </div>
                             <div class="col-xs-12">
-                                    <div class="col-xs-2" >
-                                            <label for="exampleInputEmail1">计算类型</label>
-                                            <input id="calType" type="text" class="form-control"  placeholder="计算类型">
-                                    </div>
+                                <div class="col-xs-2">
+                                        <label for="exampleInputPassword1">计算类型</label>
+                                        <div class="input-group-btn">
+                                            <button type="button" id="calType" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">字符串拼接 <span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                              <li ><a id="append" href="#">字符串拼接</a></li>
+                                              <li ><a id="add" href="#">求和</a></li>
+                                              <li ><a id="max" href="#">取最大值</a></li>
+                                              <li ><a id="min" href="#">取最小值</a></li>
+                                              <li ><a id="new" href="#">取最新值</a></li>
+                                              <li ><a id="aviator" href="#">表达式计算</a></li>
+                                            </ul>
+                                          </div>
+                                      </div>
                                     <div class="col-xs-2">
                                             <label for="exampleInputPassword1">列名</label>
                                             <input id="columnName" type="text" class="form-control"  placeholder="列名">
@@ -179,6 +195,11 @@
         $(document).ready(function(){
                 let base_url = "http://localhost:8888/svr/api";
                 init();
+                
+                var attrSubmitData = {
+                        attrType:1,
+
+                };
 
                 function get(uri, params) {
                         var qurl = base_url + uri;
@@ -255,11 +276,11 @@
                 $("#submitAttrForm").click(function() {
                         var attrId = $("#attrId").val();
                         var attrType = $("#attrType").val();
-                        var calType = $("#calType");
-                        var field = $("#columnName");
-                        var dimensionType = $("#dimensionType");
-                        var dimensionKey = $("#dimensionKey");
-                        var aviExp = $("#aviExp");
+                        var calType = $("#calType").val();
+                        var field = $("#columnName").val();
+                        var dimensionType = $("#dimensionType").val();
+                        var dimensionKey = $("#dimensionKey").val();
+                        var aviExp = $("#aviExp").val();
                 });
 
                 $("#showTableForm").click(function(){
@@ -309,7 +330,50 @@
                         getTableConfList(params);
 
                 });
-                
+                        $("#attrForm #reala").click(function(){
+                                console.log("real");
+                                console.log($("#attrType").text());
+                                console.log($("#reala").text());
+
+                                $("#attrType").html($("#reala").text()+'<span class="caret"></span>');
+                                attrSubmitData.attrType = 1;
+                                console.log(attrSubmitData);
+
+                        });
+
+                        $("#attrForm #complex").click(function(){
+                                console.log("complex");
+
+                                $("#attrType").html($("#complex").text()+'<span class="caret"></span>');
+                                attrSubmitData.attrType = 2;
+                                console.log(attrSubmitData);
+                        });
+
+                        $("#attrForm #append").click(function(){
+                                console.log("append");
+                                $("#calType").html($("#append").text()+'<span class="caret"></span>');
+                        });
+                        $("#attrForm #add").click(function(){
+                                console.log("add");
+                                $("#calType").html($("#add").text()+'<span class="caret"></span>');
+                        });
+                        $("#attrForm #max").click(function(){
+                                console.log("max");
+                                $("#calType").html($("#max").text()+'<span class="caret"></span>');
+                        });
+                        $("#attrForm #min").click(function(){
+                                console.log("min");
+                                $("#calType").html($("#min").text()+'<span class="caret"></span>');
+                        });
+                        $("#attrForm #new").click(function(){
+                                console.log("new");
+                                $("#calType").html($("#new").text()+'<span class="caret"></span>');
+                        });
+                        $("#attrForm #aviator").click(function(){
+                                console.log("aviator");
+                                $("#calType").html($("#aviator").text()+'<span class="caret"></span>');
+                        });             
+
                 function getAttrConfList(params) {
                         post(
                                 "/attr/page.do",
