@@ -126,7 +126,7 @@
                             <div class="col-xs-12">
                                 <div class="col-xs-2" >
                                         <label for="exampleInputEmail1">数据源表</label>
-                                        <input id="" type="text" class="form-control"  placeholder="数据源表">
+                                        <input id="source" type="text" class="form-control"  placeholder="数据源表">
                                       </div>
                         </div>
                             <div class="col-xs-12">
@@ -186,7 +186,7 @@
                         <div class="col-xs-12">
                                 <div class="checkbox">
                                 </div>
-                                <button id="submitAttrForm" type="submit" class="btn btn-info">Submit</button>
+                                <button id="submitRealDataForm" type="submit" class="btn btn-info">Submit</button>
                         </div>
                 </div>
         </div>
@@ -198,6 +198,7 @@
                 
                 var attrSubmitData = {
                         attrType:1,
+                        calType:1
 
                 };
 
@@ -274,13 +275,24 @@
 
                 });
                 $("#submitAttrForm").click(function() {
+                        console.log("click");
                         var attrId = $("#attrId").val();
-                        var attrType = $("#attrType").val();
-                        var calType = $("#calType").val();
                         var field = $("#columnName").val();
+                        var source = $("#source").val();
                         var dimensionType = $("#dimensionType").val();
                         var dimensionKey = $("#dimensionKey").val();
                         var aviExp = $("#aviExp").val();
+                        attrSubmitData.attrId = attrId;
+                        attrSubmitData.field = field;
+                        attrSubmitData.dimensionType = dimensionType;
+                        attrSubmitData.dimensionKey = dimensionKey;
+                        attrSubmitData.aviExp = aviExp;
+                        attrSubmitData.source = parseInt(source);
+                        console.log(attrSubmitData);
+                        post("/attr/create.do", attrSubmitData, function(){
+                                alert("success");
+                        });
+                        
                 });
 
                 $("#showTableForm").click(function(){
@@ -352,26 +364,32 @@
                         $("#attrForm #append").click(function(){
                                 console.log("append");
                                 $("#calType").html($("#append").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 1;
                         });
                         $("#attrForm #add").click(function(){
                                 console.log("add");
                                 $("#calType").html($("#add").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 2;
                         });
                         $("#attrForm #max").click(function(){
                                 console.log("max");
                                 $("#calType").html($("#max").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 3;
                         });
                         $("#attrForm #min").click(function(){
                                 console.log("min");
                                 $("#calType").html($("#min").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 4;
                         });
                         $("#attrForm #new").click(function(){
                                 console.log("new");
                                 $("#calType").html($("#new").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 5;
                         });
                         $("#attrForm #aviator").click(function(){
                                 console.log("aviator");
                                 $("#calType").html($("#aviator").text()+'<span class="caret"></span>');
+                                attrSubmitData.calType = 6;
                         });             
 
                 function getAttrConfList(params) {

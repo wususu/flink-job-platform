@@ -19,6 +19,10 @@ public class TableConfService {
 	private TableConfMapper tableConfMapper;
 	
 	
+	public TableConf get(Integer id) {
+		return tableConfMapper.get(id);
+	}
+	
 	public boolean create(TableConf tableConf) {
 		tableConf.setId(null);
 		tableConf.setCreateTime(new Date());

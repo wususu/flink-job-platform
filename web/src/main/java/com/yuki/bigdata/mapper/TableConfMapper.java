@@ -12,6 +12,9 @@ import model.TableConf;
 @Repository
 public interface TableConfMapper {
 
+	@Select("select * from " + TABLE + " where id = #{id} limit 1")
+	@ResultMap("mapper.TableConfMapper.BaseResultMap")
+	public TableConf get(Integer id);
 	
 	@InsertProvider(type = TableConfMapperProvider.class, method = "insert")
 	@Options(useGeneratedKeys=true, keyColumn="id")

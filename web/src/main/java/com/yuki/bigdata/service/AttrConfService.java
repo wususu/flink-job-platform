@@ -6,6 +6,9 @@ import com.yuki.bigdata.mapper.AttrConMapper;
 import common.PageList;
 import common.XPage;
 import model.AttrConf;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,11 @@ public class AttrConfService {
     @Autowired
     private AttrConMapper attrConMapper;
 
+    public void insertComplexRealMap(String complexAttrId, List<String> realAttrIds) {
+    	attrConMapper.insertComplexRealMap(complexAttrId, realAttrIds);
+    	return ;
+    }
+    
     public boolean create(AttrConf attrConf) {
         Preconditions.checkNotNull(attrConf.getAid(), "aid is required");
         int ret = attrConMapper.insert(attrConf);
