@@ -27,6 +27,7 @@
     <mappers>
         <!-- 通过resource引用mapper的映射文件 -->
         <mapper resource="mapper/AttrConfMapper.xml" />
+        <mapper resource="mapper/TableConfMapper.xml" />
 
     </mappers>
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
@@ -136,14 +137,33 @@ public class RestApiController {
 		}
 	}
 	
-	@RequestMapping(value="/real/result/{attrId}/{dimensionKey}", method=RequestMethod.GET)
-	public ActionRest searchResult(@PathVariable("attrId") String attrId, @PathVariable("dimensionKey")String dimensionKey) {
-		String value = jedisService.hget(attrId, dimensionKey);
+	@RequestMapping(value="/real/result.do")
+	public ActionRest searchResult(@RequestBody SearchModel searchModel) {
+		String attrId = searchModel.getAttrId();
+		String dimensionId = searchModel.getDimensionId();
+		String value = jedisService.hget(attrId, dimensionId);
 		Map<String, String> data = Maps.newHashMap();
 		data.put("attrId", attrId);
-		data.put("dimensionKey", dimensionKey);
+		data.put("dimensionId", dimensionId);
 		data.put("result", value);
 		return ActionRest.sucess(data);
+	}
+	
+	static class SearchModel {
+		private String attrId;
+		private String dimensionId;
+		public String getAttrId() {
+			return attrId;
+		}
+		public void setAttrId(String attrId) {
+			this.attrId = attrId;
+		}
+		public String getDimensionId() {
+			return dimensionId;
+		}
+		public void setDimensionId(String dimensionId) {
+			this.dimensionId = dimensionId;
+		}
 	}
 	
 	public static void main(String[] args) {

@@ -22,7 +22,7 @@ public class AttrConfMapperTest {
     AttrConfMapper attrConfMapper;
 //    INSERT INTO         attr_conf         (aid, table_id, attr_type, cal_type, db_name, tbl_name, dimension_type, dimension_key, field, field_type,cal_expression, create_time, is_online)  
 //    VALUES         ('fr20191', 3, 1, 1, 'test_maxwell', 'user_info', 'Integer', 'userid', 'name',? ?, ?, ?)
-    @Test
+//    @Test
     public void testInsert() throws Exception{
         AttrConf attrConf = new AttrConf();
         attrConf.setAid("fr20193");
@@ -41,7 +41,7 @@ public class AttrConfMapperTest {
         attrConfMapper.insert(attrConf);
     }
     
-//    @Test
+    @Test
     public void testGet() {
     	List<String> realIds = attrConfMapper.getRealAttrByComplexAttrId("fr20192");
     	List<String> complexIds = attrConfMapper.getComplexAttrByRealAttrId("fr20191");

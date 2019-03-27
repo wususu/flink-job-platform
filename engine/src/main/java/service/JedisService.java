@@ -42,8 +42,9 @@ public class JedisService {
     }
 
     public synchronized void hset(String attrId, String keyId, String value) {
-        Jedis jedis = jedis = jedisPool.getResource();
         try{
+            Jedis jedis = jedis = jedisPool.getResource();
+
         jedis.hset(attrId, keyId, value);
         }finally {
 			closeJedis(jedis);
@@ -52,9 +53,9 @@ public class JedisService {
 
     public String hget(String attrId, String keyId) {
 //    	 jedis = jedisPool.getResource();
-        Jedis jedis = jedis = jedisPool.getResource();
         String value = null;
         try{
+            Jedis jedis = jedis = jedisPool.getResource();
     	 value =  jedis.hget(attrId, keyId);
         }finally{
         	closeJedis(jedis);

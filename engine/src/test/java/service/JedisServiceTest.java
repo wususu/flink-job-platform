@@ -27,17 +27,17 @@ public class JedisServiceTest {
         	JedisService js =jedisService;
 			public void run() {
 		        for(int i=0; i< 100;i++){
-		            System.out.println(js.hget("key","value"));
+		            System.out.println("get::" +js.hget("key","value"));
 		            }
 			}
 		};
 		
 		Thread thread1 = new Thread(runnable);
 		Thread thread2 = new Thread(runnable);
-		Thread thread3 = new Thread(runnable);
+//		Thread thread3 = new Thread(runnable);
 		thread1.start();
 		thread2.start();
-		thread3.start();
+//		thread3.start();
     	
     	Thread.sleep(100000);
     	}catch (Exception e) {

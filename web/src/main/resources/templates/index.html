@@ -176,11 +176,11 @@
                         <div class="col-xs-12">
                                 <div class="col-xs-2" >
                                         <label for="exampleInputEmail1"></label>
-                                        <input type="text" class="form-control"  placeholder="属性id">
+                                        <input id="sAttrId" type="text" class="form-control"  placeholder="属性id">
                                 </div>
                                 <div class="col-xs-2" >
                                         <label for="exampleInputEmail1"></label>
-                                        <input type="text" class="form-control"  placeholder="维度：维度ID">
+                                        <input id="sDimensionId" type="text" class="form-control"  placeholder="维度：维度ID">
                                 </div>
                         </div>
                         <div class="col-xs-12">
@@ -293,6 +293,20 @@
                                 alert("success");
                         });
                         
+                });
+
+                $("#submitRealDataForm").click(function(){
+                        console.log("search");
+                        var attrId = $("#sAttrId").val();
+                        var dimensionId = $("#sDimensionId").val();
+                        if(!attrId || !dimensionId) {
+                                alert("属性名|维度Id 为必须");
+                        }
+                        var params = {
+                                "attrId": attrId,
+                                "dimensionId": dimensionId
+                        };
+                        post("/real/result.do", params);
                 });
 
                 $("#showTableForm").click(function(){
